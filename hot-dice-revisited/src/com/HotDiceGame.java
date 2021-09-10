@@ -1,5 +1,7 @@
 package com;
 
+import players.BasicPlayer;
+
 import java.io.File;
 import java.util.ArrayList;
 

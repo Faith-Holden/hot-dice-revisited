@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class DiceHand {
-    private ArrayList<Die> diceInHand;
-    private ArrayList<Die> scoringDice;
+    private ArrayList<Die> diceInHand = new ArrayList<>();
+    private ArrayList<Die> scoringDice = new ArrayList<>();
     private int handScore = 0;
 
     //------------Constructors---------------
@@ -14,7 +14,7 @@ public class DiceHand {
      */
     public DiceHand(){
         diceInHand = new ArrayList<>();
-        for (int i = 0; i<7; i++){
+        for (int i = 0; i<6; i++){
             diceInHand.add(new Die());
         }
     }
@@ -35,6 +35,13 @@ public class DiceHand {
     public DiceHand(Die[] startingDice){
         diceInHand = new ArrayList<>();
         diceInHand.addAll(Arrays.asList(startingDice));
+    }
+    /**
+     * Constructs new DiceHand from previously created dice provided as a parameter.
+     * @param startingDice dice arraylist of dice to include in new hand.
+     */
+    public DiceHand(ArrayList<Die> startingDice){
+        diceInHand = startingDice;
     }
     /**
      * Constructs new DiceHand from new dice provided as a parameter.
@@ -286,18 +293,18 @@ public class DiceHand {
         }
     }
 
-    @Override
-    public String toString(){
-        String handString = "[";
-        for(int i = 0; i<diceInHand.size(); i++){
-            if(i!=0){
-                handString = handString.concat(",");
-            }
-            handString = handString.concat(diceInHand.get(i).toString());
-        }
-        handString = handString.concat("]");
-        return handString;
-    }
+//    @Override
+//    public String toString(){
+//        String handString = "[";
+//        for(int i = 0; i<diceInHand.size(); i++){
+//            if(i!=0){
+//                handString = handString.concat(",");
+//            }
+//            handString = handString.concat(diceInHand.get(i).toString());
+//        }
+//        handString = handString.concat("]");
+//        return handString;
+//    }
 
     //-----------Standard getters and setters----------
     public void setDiceInHand(ArrayList<Die> diceInHand) {
@@ -315,5 +322,20 @@ public class DiceHand {
         this.handScore = handScore;
     }
 
+    public ArrayList<Die> getScoringDice() {
+        return scoringDice;
+    }
+
+    public void setScoringDice(ArrayList<Die> scoringDice) {
+        this.scoringDice = scoringDice;
+    }
+
+    public int getScoringDiceHandSize(){
+        return scoringDice.size();
+    }
+
+    public int getHandSize(){
+        return diceInHand.size();
+    }
     //-------------------------------------------------
 }
