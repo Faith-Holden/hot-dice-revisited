@@ -13,10 +13,13 @@ public abstract class BasicPlayer {
     public DiceHand rollDice(){
         return new DiceHand();
     }
+    public DiceHand rollDice(int diceToRoll){
+        return new DiceHand(diceToRoll);
+    }
     //-------------Abstract classes----------------
     public abstract void playTurn();
     public abstract boolean isEndTurnConditionMet(DiceHand rolledDice);
-    public abstract DiceHand evaluateHand(DiceHand rolledDice);
+    public abstract DiceHand chooseDiceToKeep(DiceHand rolledDice);
     //---------------------------------------------
 
     //-----------Getters and setters---------------

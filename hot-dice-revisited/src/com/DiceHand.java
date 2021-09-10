@@ -306,5 +306,14 @@ public class DiceHand {
     public ArrayList<Die> getDiceInHand() {
         return diceInHand;
     }
+
+    public int getHandScore() {
+        return handScore;
+    }
+
+    public void setHandScore(int handScore) {
+        this.handScore = handScore;
+    }
+
     //-------------------------------------------------
 }
