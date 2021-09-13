@@ -2,6 +2,8 @@ package com;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.function.Predicate;
 
 public class DiceHand {
     private ArrayList<Die> diceInHand = new ArrayList<>();
@@ -14,9 +16,6 @@ public class DiceHand {
      */
     public DiceHand(){
         diceInHand = new ArrayList<>();
-        for (int i = 0; i<6; i++){
-            diceInHand.add(new Die());
-        }
     }
     /**
      * Constructs new DiceHand with random dice.
@@ -43,6 +42,21 @@ public class DiceHand {
     public DiceHand(ArrayList<Die> startingDice){
         diceInHand = startingDice;
     }
+
+
+    /**
+     * Constructs new DiceHand from previously created DiceHands provided as a parameter.
+     * @param hands variable arity, add multiple DiceHands
+     */
+    public DiceHand(DiceHand... hands){
+        ArrayList<Die> dice = new ArrayList<>();
+        for(DiceHand diceHand : hands){
+            dice.addAll(diceHand.getDiceInHand());
+        }
+        diceInHand.addAll(dice);
+    }
+
+
     /**
      * Constructs new DiceHand from new dice provided as a parameter.
      * @param startingDice int array for creating new dice to include in the hand.
@@ -55,8 +69,8 @@ public class DiceHand {
     }
     //--------------------------------------
 
-    public void scoreSubsequentRolls(DiceHand newHand){
-        for(Die die : newHand.diceInHand){
+    public void scoreSubsequentRolls(){
+        for(Die die : diceInHand){
             if (die.getDieNum()==1){
                 scoringDice.add(die);
                 handScore+=100;
@@ -85,9 +99,8 @@ public class DiceHand {
         //tallies the dice and adds scoring dice to the scoringDice array
         for(Die die : diceInHand){
             switch (die.getDieNum()){
-                case 1:
+                case 1:{
                     num1s++;
-                    scoringDice.add(die);
                     if(num1s==2){
                         pairs++;
                         fullStraight=false;
@@ -107,8 +120,8 @@ public class DiceHand {
                         sixOfKind=true;
                         fivesType = 0;
                     }
-                    break;
-                case 2:
+                    break;}
+                case 2:{
                     num2s++;
                     if(num2s==2){
                         pairs++;
@@ -119,131 +132,116 @@ public class DiceHand {
                         }else{
                             triplesTypes[0]=2;
                         }
-                        scoringDice.add(die);
                     } else if (num2s==4){
                         foursType = 2;
                         triplesTypes[0]=0;
-                        scoringDice.add(die);
                     } else if (num2s==5){
                         fivesType = 2;
                         foursType = 0;
-                        scoringDice.add(die);
                     }else if(num2s==6){
                         sixOfKind=true;
                         fivesType = 0;
-                        scoringDice.add(die);
                     }
-                    break;
-                case 3:
+                    break;}
+                case 3: {
                     num3s++;
-                    if(num3s==2){
+                    if (num3s == 2) {
                         pairs++;
-                        fullStraight=false;
-                    }else if(num3s==3){
-                        if(triplesTypes[0]!=0){
-                            triplesTypes[1]=3;
-                        }else{
-                            triplesTypes[0]=3;
+                        fullStraight = false;
+                    } else if (num3s == 3) {
+                        if (triplesTypes[0] != 0) {
+                            triplesTypes[1] = 3;
+                        } else {
+                            triplesTypes[0] = 3;
                         }
-                        scoringDice.add(die);
-                    } else if (num3s==4){
+                    } else if (num3s == 4) {
                         foursType = 3;
-                        triplesTypes[0]=0;
-                        scoringDice.add(die);
-                    } else if (num3s==5){
+                        triplesTypes[0] = 0;
+                    } else if (num3s == 5) {
                         fivesType = 3;
                         foursType = 0;
-                        scoringDice.add(die);
-                    }else if(num3s==6){
-                        sixOfKind=true;
+                    } else if (num3s == 6) {
+                        sixOfKind = true;
                         fivesType = 0;
-                        scoringDice.add(die);
                     }
                     break;
-                case 4:
+                }
+                case 4: {
                     num4s++;
-                    if(num4s==2){
+                    if (num4s == 2) {
                         pairs++;
-                        fullStraight=false;
-                    }else if(num4s==3){
-                        if(triplesTypes[0]!=0){
-                            triplesTypes[1]=4;
-                        }else{
-                            triplesTypes[0]=4;
+                        fullStraight = false;
+                    } else if (num4s == 3) {
+                        if (triplesTypes[0] != 0) {
+                            triplesTypes[1] = 4;
+                        } else {
+                            triplesTypes[0] = 4;
                         }
-                        scoringDice.add(die);
-                    } else if (num4s==4){
+                    } else if (num4s == 4) {
                         foursType = 4;
-                        triplesTypes[0]=0;
-                        scoringDice.add(die);
-                    } else if (num4s==5){
+                        triplesTypes[0] = 0;
+                    } else if (num4s == 5) {
                         fivesType = 4;
                         foursType = 0;
-                        scoringDice.add(die);
-                    } else if(num4s==6){
-                        sixOfKind=true;
+                    } else if (num4s == 6) {
+                        sixOfKind = true;
                         fivesType = 0;
-                        scoringDice.add(die);
                     }
                     break;
-                case 5:
+                }
+                case 5: {
                     num5s++;
-                    scoringDice.add(die);
-                    if(num5s==2){
+                    if (num5s == 2) {
                         pairs++;
-                        fullStraight=false;
-                    } else if(num5s==3){
-                        if(triplesTypes[0]!=0){
-                            triplesTypes[1]=5;
-                        }else{
-                            triplesTypes[0]=5;
+                        fullStraight = false;
+                    } else if (num5s == 3) {
+                        if (triplesTypes[0] != 0) {
+                            triplesTypes[1] = 5;
+                        } else {
+                            triplesTypes[0] = 5;
                         }
-                        scoringDice.add(die);
-                    } else if (num5s==4){
+                    } else if (num5s == 4) {
                         foursType = 5;
-                        triplesTypes[0]=0;
-                    } else if (num5s==5){
+                        triplesTypes[0] = 0;
+                    } else if (num5s == 5) {
                         fivesType = 5;
                         foursType = 0;
-                        scoringDice.add(die);
-                    }else if(num5s==6){
-                        sixOfKind=true;
+                    } else if (num5s == 6) {
+                        sixOfKind = true;
                         fivesType = 0;
-                        scoringDice.add(die);
                     }
                     break;
-                case 6:
+                }
+                case 6: {
                     num6s++;
-                    if(num6s==2){
+                    if (num6s == 2) {
                         pairs++;
-                        fullStraight=false;
-                    }else if(num6s==3){
-                        if(triplesTypes[0]!=0){
-                            triplesTypes[1]=6;
-                        }else{
-                            triplesTypes[0]=6;
+                        fullStraight = false;
+                    } else if (num6s == 3) {
+                        if (triplesTypes[0] != 0) {
+                            triplesTypes[1] = 6;
+                        } else {
+                            triplesTypes[0] = 6;
                         }
-                        scoringDice.add(die);
-                    } else if (num6s==4){
+                    } else if (num6s == 4) {
                         foursType = 6;
-                        triplesTypes[0]=0;
-                        scoringDice.add(die);
-                    } else if (num6s==5){
+                        triplesTypes[0] = 0;
+                    } else if (num6s == 5) {
                         fivesType = 6;
                         foursType = 0;
-                        scoringDice.add(die);
-                    }else if(num6s==6){
-                        sixOfKind=true;
+                    } else if (num6s == 6) {
+                        sixOfKind = true;
                         fivesType = 0;
-                        scoringDice.add(die);
                     }
                     break;
+                }
             }
         }
 
         //----------Scores the dice based on type and tally------------------
-        if(!fullStraight || pairs==3 || triplesTypes[1]!=0 || sixOfKind) {
+        if(fullStraight || pairs==3 || triplesTypes[1]!=0 || sixOfKind) {
             handScore = 2600;
+            scoringDice.addAll(diceInHand);
             return;
         }
         if(triplesTypes[0]!=0){
@@ -260,6 +258,14 @@ public class DiceHand {
             } else {
                 handScore+=(600+num5s*50+num1s*100);
             }
+            scoringDice.addAll(diceInHand);
+            scoringDice.removeIf(die -> {
+                if(die.getDieNum()!=triplesTypes[0] && die.getDieNum()!=1 && die.getDieNum()!=5){
+                    return true;
+                }else{
+                    return false;
+                }
+            });
         }else if (foursType!=0){
             if(foursType==1){
                 handScore+=(2000+num5s*50);
@@ -274,6 +280,15 @@ public class DiceHand {
             }else {
                 handScore+=(1200+num5s*50+num1s*100);
             }
+            scoringDice.addAll(diceInHand);
+            int finalFoursType = foursType;
+            scoringDice.removeIf(die -> {
+                if(die.getDieNum()!= finalFoursType && die.getDieNum()!=1 && die.getDieNum()!=5){
+                    return true;
+                }else{
+                    return false;
+                }
+            });
         }else if (fivesType!=0){
             if(fivesType==1){
                 handScore+=(3000+num5s*50);
@@ -288,23 +303,44 @@ public class DiceHand {
             }else {
                 handScore+=(1800+num5s*50+num1s*100);
             }
+            scoringDice.addAll(diceInHand);
+            int finalFivesType = fivesType;
+            scoringDice.removeIf(die -> {
+                if(die.getDieNum()!= finalFivesType && die.getDieNum()!=1 && die.getDieNum()!=5){
+                    return true;
+                }else{
+                    return false;
+                }
+            });
         }else{
             handScore+=(num5s*50+num1s*100);
+            scoringDice.addAll(diceInHand);
+            scoringDice.removeIf(die -> {
+                if(die.getDieNum()!=1 && die.getDieNum()!=5){
+                    return true;
+                }else{
+                    return false;
+                }
+            });
         }
     }
 
-//    @Override
-//    public String toString(){
-//        String handString = "[";
-//        for(int i = 0; i<diceInHand.size(); i++){
-//            if(i!=0){
-//                handString = handString.concat(",");
-//            }
-//            handString = handString.concat(diceInHand.get(i).toString());
-//        }
-//        handString = handString.concat("]");
-//        return handString;
-//    }
+    @Override
+    public String toString(){
+        String handString = "[";
+        for(int i = 0; i<diceInHand.size(); i++){
+            if(i!=0){
+                handString = handString.concat(",");
+            }
+            handString = handString.concat(diceInHand.get(i).toString());
+        }
+        handString = handString.concat("]");
+        return handString;
+    }
+
+    public boolean isFarkle(){
+        return diceInHand.size() == 0;
+    }
 
     //-----------Standard getters and setters----------
     public void setDiceInHand(ArrayList<Die> diceInHand) {
@@ -338,4 +374,5 @@ public class DiceHand {
         return diceInHand.size();
     }
     //-------------------------------------------------
+
 }

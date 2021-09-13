@@ -10,8 +10,12 @@ public class UltraConservativePlayer extends BasicBotPlayer{
     }
 
     @Override
-    public DiceHand chooseDiceToKeep(DiceHand rolledDice) {
-        rolledDice.scoreInitialRoll();
+    public DiceHand chooseDiceToKeep(DiceHand rolledDice, boolean initialRoll) {
+        if(initialRoll){
+            rolledDice.scoreInitialRoll();
+        }else{
+            rolledDice.scoreSubsequentRolls();
+        }
         return new DiceHand(rolledDice.getScoringDice());
     }
 }

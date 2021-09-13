@@ -8,8 +8,41 @@ import java.util.ArrayList;
 public class HotDiceGame {
     private ArrayList<BasicPlayer> players = new ArrayList<>();
 
+
     public HotDiceGame(){
 
+    }
+
+    public void updateGameBoard(){}
+
+    public BasicPlayer playGame(){
+        boolean inProgress = true;
+        int lastCallPlayer = -1;
+        BasicPlayer winningPlayer = null;
+        int winningScore = 0;
+        boolean gameStarted = false;
+        while (inProgress){
+            for(BasicPlayer player : players){
+                updateGameBoard();
+                if(players.indexOf(player)==lastCallPlayer){
+                    inProgress = false;
+                    break;
+
+                }else{
+                    player.playTurn();
+                    if(player.getPlayerScore()>10000){
+                        if(lastCallPlayer==-1){
+                            lastCallPlayer = players.indexOf(player);
+                        }
+                        if(player.getPlayerScore()>winningScore){
+                            winningScore = player.getPlayerScore();
+                            winningPlayer = player;
+                        }
+                    }
+                }
+            }
+        }
+        return winningPlayer;
     }
 
     public void loadGame(File saveFile){
@@ -36,13 +69,6 @@ public class HotDiceGame {
                     + players.size() + "players in the game!");
         }
     }
-
-
-
-
-    //-------------Nested Player Classes -------------------
-
-    //------------------------------------------------------
 
 
     //--------------Getters and setters---------------------
