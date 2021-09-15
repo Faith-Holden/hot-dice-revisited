@@ -13,26 +13,27 @@ public class HotDiceGame {
 
     }
 
-    public void updateGameBoard(){}
+    public void updateGameBoard(boolean isLastCall){}
 
     public BasicPlayer playGame(){
         boolean inProgress = true;
         int lastCallPlayer = -1;
         BasicPlayer winningPlayer = null;
         int winningScore = 0;
-        boolean gameStarted = false;
+        boolean isLastCall = false;
         while (inProgress){
             for(BasicPlayer player : players){
-                updateGameBoard();
                 if(players.indexOf(player)==lastCallPlayer){
                     inProgress = false;
                     break;
 
                 }else{
+                    updateGameBoard(isLastCall);
                     player.playTurn();
-                    if(player.getPlayerScore()>10000){
+                    if(player.getPlayerScore()>1000){
                         if(lastCallPlayer==-1){
                             lastCallPlayer = players.indexOf(player);
+                            isLastCall = true;
                         }
                         if(player.getPlayerScore()>winningScore){
                             winningScore = player.getPlayerScore();

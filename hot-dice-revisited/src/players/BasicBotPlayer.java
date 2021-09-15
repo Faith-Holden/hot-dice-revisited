@@ -6,46 +6,48 @@ import com.Die;
 import java.util.ArrayList;
 
 public abstract class BasicBotPlayer extends BasicPlayer {
-    Object lock = new Object();
-
     @Override
     public void playTurn() {
         boolean turnIsDone = false;
         boolean initialRoll = true;
-        int currentHandSize = 0;
+        DiceHand chosenDice;
         setPlayerHand(new DiceHand());
-        updateGui();
+        updateGui(0,getPlayerHand(),false);
+        int handScore = 0;
 
         int counter = 0;
         while (!turnIsDone){
-            currentHandSize = getPlayerHand().getHandSize();
-            if(currentHandSize==6){
-                setPlayerHand(new DiceHand());
-                currentHandSize = 0;
+            checkPaused();
+            if(getPlayerHand().getHandSize()==6){
+                getPlayerHand().getScoringDice().clear();
+                getPlayerHand().getDiceInHand().clear();
                 initialRoll=true;
+                updateGui(0, getPlayerHand(), false);
             }
-            DiceHand rolledDice = rollDice(6-currentHandSize);
+            checkPaused();
+            DiceHand rolledDice = rollDice(6-getPlayerHand().getHandSize());
             runAnimation1(rolledDice);//animation to show "rolling" the dice
-            updateGui();
-            DiceHand keptDice = chooseDiceToKeep(rolledDice, initialRoll);
-            updateGui();
-            if(keptDice.isFarkle()){
-                turnIsDone=true;
+            checkPaused();
+            chosenDice = chooseDiceToKeep(rolledDice, initialRoll);
+            if(chosenDice.getHandSize()==0){
+                handScore = 0;
+                setPlayerHand(new DiceHand());
+                updateGui(rolledDice.getHandSize(), getPlayerHand(), true);
+                turnIsDone = true;
                 continue;
             }
-            if(initialRoll){
-                keptDice.scoreInitialRoll();
-                initialRoll=false;
-            }else{
-                keptDice.scoreSubsequentRolls();
-            }
-            setPlayerScore(getPlayerScore()+keptDice.getHandScore());
-            setPlayerHand(new DiceHand(getPlayerHand(), keptDice));
-            runAnimation2(getPlayerHand());
-            updateGui();
+            checkPaused();
+            chosenDice.scoreInitialRoll();
+            handScore = handScore+chosenDice.getHandScore();
+            checkPaused();
+            setPlayerHand(new DiceHand(getPlayerHand(), chosenDice));
+            updateGui(rolledDice.getHandSize(), getPlayerHand(), false);
+            checkPaused();
             turnIsDone = isEndTurnConditionMet(getPlayerHand());
-
-            counter++;
+            initialRoll = false;
+            checkPaused();
+//            counter++;
         }
+        setPlayerScore(getPlayerScore() + handScore);
     }
 }

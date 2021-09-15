@@ -12,9 +12,14 @@ public abstract class BasicPlayer {
     }
 
     public void updateGui(){}
+    public void updateGui(int rolledDiceNum, DiceHand keptDice, boolean isFarkle){}
     public void runAnimation1(DiceHand diceHand){}
     public void runAnimation2(DiceHand diceHand){}
     public void showSelected(DiceHand diceHand){}
+    public void checkPaused(){}
+
+
+    public abstract void playTurn();
 
 
     public DiceHand rollDice(){
@@ -23,8 +28,8 @@ public abstract class BasicPlayer {
     public DiceHand rollDice(int diceToRoll){
         return new DiceHand(diceToRoll);
     }
-    //-------------Abstract classes----------------
-    public abstract void playTurn();
+
+    //-------------Abstract methods----------------
     public abstract boolean isEndTurnConditionMet(DiceHand rolledDice);
     public abstract DiceHand chooseDiceToKeep(DiceHand rolledDice, boolean initialRoll);
     //---------------------------------------------

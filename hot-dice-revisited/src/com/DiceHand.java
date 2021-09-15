@@ -111,6 +111,7 @@ public class DiceHand {
                             triplesTypes[0]=1;
                         }
                     } else if (num1s==4){
+                        pairs++;
                         foursType = 1;
                         triplesTypes[0]=0;
                     } else if (num1s==5){
@@ -133,6 +134,7 @@ public class DiceHand {
                             triplesTypes[0]=2;
                         }
                     } else if (num2s==4){
+                        pairs++;
                         foursType = 2;
                         triplesTypes[0]=0;
                     } else if (num2s==5){
@@ -155,6 +157,7 @@ public class DiceHand {
                             triplesTypes[0] = 3;
                         }
                     } else if (num3s == 4) {
+                        pairs++;
                         foursType = 3;
                         triplesTypes[0] = 0;
                     } else if (num3s == 5) {
@@ -178,6 +181,7 @@ public class DiceHand {
                             triplesTypes[0] = 4;
                         }
                     } else if (num4s == 4) {
+                        pairs++;
                         foursType = 4;
                         triplesTypes[0] = 0;
                     } else if (num4s == 5) {
@@ -201,6 +205,7 @@ public class DiceHand {
                             triplesTypes[0] = 5;
                         }
                     } else if (num5s == 4) {
+                        pairs++;
                         foursType = 5;
                         triplesTypes[0] = 0;
                     } else if (num5s == 5) {
@@ -224,6 +229,7 @@ public class DiceHand {
                             triplesTypes[0] = 6;
                         }
                     } else if (num6s == 4) {
+                        pairs++;
                         foursType = 6;
                         triplesTypes[0] = 0;
                     } else if (num6s == 5) {
@@ -237,8 +243,12 @@ public class DiceHand {
                 }
             }
         }
+        if(num1s == 0 || num2s == 0 || num3s == 0 || num4s == 0 || num5s == 0 || num6s == 0){
+            fullStraight = false;
+        }
 
-        //----------Scores the dice based on type and tally------------------
+
+            //----------Scores the dice based on type and tally------------------
         if(fullStraight || pairs==3 || triplesTypes[1]!=0 || sixOfKind) {
             handScore = 2600;
             scoringDice.addAll(diceInHand);
@@ -323,6 +333,10 @@ public class DiceHand {
                 }
             });
         }
+    }
+
+    public int scoringDiceHandSize (){
+        return scoringDice.size();
     }
 
     @Override
