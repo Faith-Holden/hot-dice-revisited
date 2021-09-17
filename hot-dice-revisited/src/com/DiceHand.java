@@ -9,6 +9,18 @@ public class DiceHand {
     private ArrayList<Die> diceInHand = new ArrayList<>();
     private ArrayList<Die> scoringDice = new ArrayList<>();
     private int handScore = 0;
+    private int num1s = 0;
+    private int num2s = 0;
+    private int num3s = 0;
+    private int num4s = 0;
+    private int num5s = 0;
+    private int num6s = 0;
+    boolean fullStraight = true;//1-6 straight. Becomes false if any die num tally is more than 1
+    int pairs = 0;//number of pairs
+    int[] triplesTypes = new int[]{0,0};//e.g. three 4s and three 5s.
+    int foursType = 0;//e.g. four 5s, four 3s, ect.
+    int fivesType = 0;//e.g. five 5s, five 3s, ect.
+    boolean sixOfKind = false;
 
     //------------Constructors---------------
     /**
@@ -82,19 +94,19 @@ public class DiceHand {
     }
 
     public void scoreInitialRoll(){
-        int num1s = 0;
-        int num2s = 0;
-        int num3s = 0;
-        int num4s = 0;
-        int num5s = 0;
-        int num6s = 0;
+        num1s = 0;
+        num2s = 0;
+        num3s = 0;
+        num4s = 0;
+        num5s = 0;
+        num6s = 0;
+        fullStraight = true;//1-6 straight. Becomes false if any die num tally is more than 1
+        pairs = 0;//number of pairs
+        triplesTypes = new int[]{0,0};//e.g. three 4s and three 5s.
+        foursType = 0;//e.g. four 5s, four 3s, ect.
+        fivesType = 0;//e.g. five 5s, five 3s, ect.
+        sixOfKind = false;
 
-        boolean fullStraight = true;//1-6 straight. Becomes false if any die num tally is more than 1
-        int pairs = 0;//number of pairs
-        int[] triplesTypes = new int[]{0,0};//e.g. three 4s and three 5s.
-        int foursType = 0;//e.g. four 5s, four 3s, ect.
-        int fivesType = 0;//e.g. five 5s, five 3s, ect.
-        boolean sixOfKind = false;
 
         //tallies the dice and adds scoring dice to the scoringDice array
         for(Die die : diceInHand){
@@ -247,7 +259,6 @@ public class DiceHand {
             fullStraight = false;
         }
 
-
             //----------Scores the dice based on type and tally------------------
         if(fullStraight || pairs==3 || triplesTypes[1]!=0 || sixOfKind) {
             handScore = 2600;
@@ -387,6 +398,25 @@ public class DiceHand {
     public int getHandSize(){
         return diceInHand.size();
     }
-    //-------------------------------------------------
+
+    public int getNum1s() {
+        return num1s;
+    }
+    public int getNum2s() {
+        return num2s;
+    }
+    public int getNum3s() {
+        return num3s;
+    }
+    public int getNum4s() {
+        return num4s;
+    }
+    public int getNum5s() {
+        return num5s;
+    }
+    public int getNum6s() {
+        return num6s;
+    }
+//-------------------------------------------------
 
 }

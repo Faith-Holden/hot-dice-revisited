@@ -4,16 +4,13 @@ import com.DiceHand;
 
 public abstract class HumanPlayer extends BasicPlayer{
     @Override
-    public void playTurn() {
+    public void playTurn() throws InterruptedException {
         boolean turnIsDone = false;
         boolean initialRoll = true;
-//        DiceHand retainedDice = new DiceHand();
         DiceHand chosenDice;
         setPlayerHand(new DiceHand());
-//        updateGui();
         updateGui(0, getPlayerHand(), false);
         prepGuiForUserTurn();
-        boolean isFarkle;
         int handScore = 0;
 
         waitForUser();
@@ -25,7 +22,6 @@ public abstract class HumanPlayer extends BasicPlayer{
                 initialRoll=true;
                 updateGui(0, getPlayerHand(), false);
             }
-
             DiceHand rolledDice = new DiceHand(6-getPlayerHand().getHandSize());
             prepGuiForUserDiceRoll(rolledDice);
             checkPaused();
@@ -39,13 +35,8 @@ public abstract class HumanPlayer extends BasicPlayer{
                 continue;
             }
             checkPaused();
+            chosenDice.scoreInitialRoll();
 
-
-            if(initialRoll){
-                chosenDice.scoreInitialRoll();
-            }else{
-                chosenDice.scoreSubsequentRolls();
-            }
             handScore = handScore+chosenDice.getHandScore();
             checkPaused();
             setPlayerHand(new DiceHand(getPlayerHand(), chosenDice));
@@ -60,17 +51,8 @@ public abstract class HumanPlayer extends BasicPlayer{
         setPlayerScore(getPlayerScore() + handScore);
     }
 
-    public abstract void waitForUser();
-    public void prepGuiForUserTurn(){}
-    public void prepGuiForUserDiceRoll(DiceHand rolledDice){}
-    public void keptDiceGuiUpdate(DiceHand keptDice){}
-
-
-
-
-
-
-
-
-    public void getUserResponse(){}
+    public abstract void waitForUser() throws InterruptedException;
+    public void prepGuiForUserTurn() throws InterruptedException {}
+    public void prepGuiForUserDiceRoll(DiceHand rolledDice) throws InterruptedException {}
 }
+
