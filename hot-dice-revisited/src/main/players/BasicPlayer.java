@@ -1,6 +1,6 @@
-package players;
+package main.players;
 
-import com.DiceHand;
+import main.com.DiceHand;
 
 public abstract class BasicPlayer {
     private final String PLAYER_TYPE;
@@ -22,10 +22,6 @@ public abstract class BasicPlayer {
     public void runAnimation2(DiceHand diceHand){}
     public void showSelected(DiceHand diceHand){}
     public void checkPaused(){}
-
-
-
-
 
     public DiceHand rollDice(){
         return new DiceHand(6);

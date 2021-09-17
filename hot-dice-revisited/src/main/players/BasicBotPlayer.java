@@ -1,6 +1,6 @@
-package players;
+package main.players;
 
-import com.DiceHand;
+import main.com.DiceHand;
 
 public abstract class BasicBotPlayer extends BasicPlayer {
     @Override
@@ -33,7 +33,6 @@ public abstract class BasicBotPlayer extends BasicPlayer {
                 continue;
             }
             checkPaused();
-            chosenDice.scoreInitialRoll();
             handScore = handScore+chosenDice.getHandScore();
             checkPaused();
             setPlayerHand(new DiceHand(getPlayerHand(), chosenDice));

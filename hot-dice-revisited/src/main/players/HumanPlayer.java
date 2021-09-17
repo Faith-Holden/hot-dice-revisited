@@ -1,6 +1,6 @@
-package players;
+package main.players;
 
-import com.DiceHand;
+import main.com.DiceHand;
 
 public abstract class HumanPlayer extends BasicPlayer{
     @Override
@@ -35,7 +35,6 @@ public abstract class HumanPlayer extends BasicPlayer{
                 continue;
             }
             checkPaused();
-            chosenDice.scoreInitialRoll();
 
             handScore = handScore+chosenDice.getHandScore();
             checkPaused();

@@ -1,4 +1,4 @@
-package com;
+package main.com;
 
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
@@ -15,10 +15,10 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import players.BasicPlayer;
-import players.ConservativePlayer;
-import players.HumanPlayer;
-import players.UltraConservativePlayer;
+import main.players.BasicPlayer;
+import main.players.ConservativePlayer;
+import main.players.HumanPlayer;
+import main.players.UltraConservativePlayer;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -94,7 +94,7 @@ public class HotDiceGui extends Application {
         Alert loadOrNewAlert = new Alert(Alert.AlertType.CONFIRMATION,
                 "Click 'Load Game' to load a game from a file, or click 'New Game' to create a new game.", loadGame, newGame);
         loadOrNewAlert.setHeaderText("The game \"Hot Dice\", also commonly known as \"Farkle\", is a folk dice game played in a series of rounds." +
-                                    "\nIn each round, players roll a hand of dice repeatedly until they decide to end their turn, or until they" +
+                                    "\nIn each round, main.players roll a hand of dice repeatedly until they decide to end their turn, or until they" +
                                     "\n\"Farkle\" by rolling a hand with no scoring dice." +
                                     "\nScores are based on the number of 1s or 5s in a hand, and by straights, 3 pairs, or sets of 3 or more dice." +
                                     "\nFor more information on the game play, please see \"Help\" section of the menu.");
@@ -352,7 +352,7 @@ public class HotDiceGui extends Application {
         int yEdge = (int) baseCanvas.getHeight()/2-125;
         GraphicsContext graphicsContext = baseCanvas.getGraphicsContext2D();
         graphicsContext.setFill(Color.rgb(35,95,50));
-        Image bowlImage = new Image("resources\\images\\rectangle bowl.png");
+        Image bowlImage = new Image("main\\resources\\images\\rectangle bowl.png");
         graphicsContext.drawImage(bowlImage,xEdge,yEdge);
         graphicsContext.setStroke(Color.BLACK);
         graphicsContext.strokeRect(xEdge,yEdge,335,250);
@@ -390,7 +390,7 @@ public class HotDiceGui extends Application {
         Alert howToPlayAlert = new Alert(Alert.AlertType.INFORMATION);
         howToPlayAlert.setWidth(800);
         togglePausedOrResumed();
-        howToPlayAlert.setHeaderText("Farkle is played by two or more players, with each player in succession having a turn at throwing the dice." +
+        howToPlayAlert.setHeaderText("Farkle is played by two or more main.players, with each player in succession having a turn at throwing the dice." +
                 "\n--Each player's turn results in a score, and the scores for each player accumulate to 10,000." +
                 "\n--At the beginning of each turn, the player throws all the dice at once." +
                 "\n--After each throw, one or more scoring dice must be set aside." +
@@ -419,7 +419,7 @@ public class HotDiceGui extends Application {
     //--------------Methods to update the gui------------------------
     private void drawDie(Die die, int playerOrBowlNum, int dieNumOfTotal){
         GraphicsContext graphicsContext = animationCanvas.getGraphicsContext2D();
-        Image diceImage = new Image("resources\\images\\dice.png");
+        Image diceImage = new Image("main\\resources\\images\\dice.png");
         int drawAreaXEdge;
         int drawAreaYEdge;
         int distanceMultiplier;
@@ -994,14 +994,12 @@ public class HotDiceGui extends Application {
         }
         @Override
         public DiceHand chooseDiceToKeep(DiceHand rolledDice, boolean initialRoll) throws InterruptedException {
-            rolledDice.scoreInitialRoll();
             if(rolledDice.getHandScore()==0){
                 return new DiceHand();
             }
             notified = false;
             doWait();
             DiceHand diceToReturn = new DiceHand(selectedDice);
-            diceToReturn.scoreInitialRoll();
             diceToReturn = new DiceHand(diceToReturn.getScoringDice());
             return diceToReturn;
         }
