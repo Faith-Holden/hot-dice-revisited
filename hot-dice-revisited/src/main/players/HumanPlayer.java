@@ -27,7 +27,7 @@ public abstract class HumanPlayer extends BasicPlayer{
             checkPaused();
             runAnimation1(rolledDice);
             checkPaused();
-            chosenDice = chooseDiceToKeep(rolledDice, initialRoll);
+            chosenDice = chooseDiceToKeep(rolledDice);
             if(chosenDice.getHandSize()==0){
                 handScore = 0;
                 updateGui(rolledDice.getHandSize(), chosenDice, true);

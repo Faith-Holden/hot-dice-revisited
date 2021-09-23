@@ -11,30 +11,22 @@ public abstract class BasicPlayer {
 
     public BasicPlayer(){
         playerScore = 0;
-        playerHand = rollDice();
+        playerHand = new DiceHand(6);
         PLAYER_TYPE = getPlayerString();
-
     }
 
     public void updateGui() throws InterruptedException {}
     public void updateGui(int rolledDiceNum, DiceHand keptDice, boolean isFarkle) throws InterruptedException {}
     public void runAnimation1(DiceHand diceHand) throws InterruptedException {}
     public void runAnimation2(DiceHand diceHand){}
-    public void showSelected(DiceHand diceHand){}
+    public void showHotDice(){}
     public void checkPaused(){}
-
-    public DiceHand rollDice(){
-        return new DiceHand(6);
-    }
-    public DiceHand rollDice(int diceToRoll){
-        return new DiceHand(diceToRoll);
-    }
 
     //-------------Abstract methods----------------
     public abstract String getPlayerString();
     public abstract void playTurn() throws InterruptedException;
     public abstract boolean isEndTurnConditionMet(DiceHand rolledDice);
-    public abstract DiceHand chooseDiceToKeep(DiceHand rolledDice, boolean initialRoll) throws InterruptedException;
+    public abstract DiceHand chooseDiceToKeep(DiceHand rolledDice) throws InterruptedException;
     //---------------------------------------------
 
     //-----------Getters and setters---------------

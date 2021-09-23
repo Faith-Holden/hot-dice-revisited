@@ -9,12 +9,10 @@ public class ConservativePlayer extends BasicBotPlayer{
             return false;
         }
         int newDiceNum = diceToCheck.getHandSize();
-        boolean isDone = (newDiceNum)>2;
-        return isDone;
+        return (newDiceNum)>2;
     }
     @Override
-    public DiceHand chooseDiceToKeep(DiceHand rolledDice, boolean initialRoll) {
-//        rolledDice.scoreInitialRoll();
+    public DiceHand chooseDiceToKeep(DiceHand rolledDice) {
         return new DiceHand(rolledDice.getScoringDice());
     }
     @Override

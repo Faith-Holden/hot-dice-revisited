@@ -15,10 +15,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import main.players.BasicPlayer;
-import main.players.ConservativePlayer;
-import main.players.HumanPlayer;
-import main.players.UltraConservativePlayer;
+import main.players.*;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -89,8 +86,8 @@ public class HotDiceGui extends Application {
 
     //-------------Methods to set up the gui-------------------
     private void doStartUpAlert(){
-        ButtonType loadGame = new ButtonType("Load Game", ButtonBar.ButtonData.YES);
-        ButtonType newGame = new ButtonType("New Game", ButtonBar.ButtonData.NO);
+        ButtonType newGame = new ButtonType("New Game", ButtonBar.ButtonData.YES);
+        ButtonType loadGame = new ButtonType("Load Game", ButtonBar.ButtonData.NO);
         Alert loadOrNewAlert = new Alert(Alert.AlertType.CONFIRMATION,
                 "Click 'Load Game' to load a game from a file, or click 'New Game' to create a new game.", loadGame, newGame);
         loadOrNewAlert.setHeaderText("The game \"Hot Dice\", also commonly known as \"Farkle\", is a folk dice game played in a series of rounds." +
@@ -690,7 +687,6 @@ public class HotDiceGui extends Application {
         Platform.runLater(() -> drawKeptDice(playerHand, playerNum));
         Platform.runLater(HotDiceGui.this::updateScoreBoard);
         doWait();
-
     }
 
     private void doRunAnimation1(DiceHand rolledDice) throws InterruptedException {
@@ -792,14 +788,10 @@ public class HotDiceGui extends Application {
 
     //-------------------nested player classes--------------------
 
-    private class ConservativeGuiPlayer extends ConservativePlayer {
+    private class ModerateGuiPlayer extends ModeratePlayer{
         @Override
         public void checkPaused(){
             doCheckPaused();
-        }
-        @Override
-        public void updateGui() throws InterruptedException {
-            doUpdateGui(this.getPlayerHand(), players.indexOf(this));
         }
         @Override
         public void updateGui(int rolledDiceNum, DiceHand keptDice, boolean isFarkle) throws InterruptedException {
@@ -816,6 +808,47 @@ public class HotDiceGui extends Application {
         @Override
         public void runAnimation1(DiceHand rolledDice) throws InterruptedException {
             doRunAnimation1(rolledDice);
+        }
+        @Override
+        public void showHotDice(){
+            synchronized (lock){
+                try {
+                    lock.wait(1000);
+                }catch (InterruptedException ignored){
+                }
+            }
+        }
+    }//end of class moderate player
+
+    private class ConservativeGuiPlayer extends ConservativePlayer {
+        @Override
+        public void checkPaused(){
+            doCheckPaused();
+        }
+        @Override
+        public void updateGui(int rolledDiceNum, DiceHand keptDice, boolean isFarkle) throws InterruptedException {
+            if(isFarkle){
+                showFarkle(rolledDiceNum);
+            }else{
+                animationCanvas.getGraphicsContext2D().clearRect(0,0,animationCanvas.getWidth(),animationCanvas.getHeight());
+                for(Button diceButton : diceButtons){
+                    diceButton.setStyle("-fx-border-color: transparent; -fx-border-width: 0; -fx-background-radius: 0; -fx-background-color: transparent;");
+                }
+                doUpdateGui(keptDice, game.currentPlayerNum-1);
+            }
+        }
+        @Override
+        public void runAnimation1(DiceHand rolledDice) throws InterruptedException {
+            doRunAnimation1(rolledDice);
+        }
+        @Override
+        public void showHotDice(){
+            synchronized (lock){
+                try {
+                    lock.wait(1000);
+                }catch (InterruptedException ignored){
+                }
+            }
         }
     }//End of class ConservativeGuiPlayer
 
@@ -825,10 +858,6 @@ public class HotDiceGui extends Application {
             doCheckPaused();
         }
         @Override
-        public void updateGui() throws InterruptedException {
-            doUpdateGui(this.getPlayerHand(), players.indexOf(this));
-        }
-        @Override
         public void updateGui(int rolledDiceNum, DiceHand keptDice, boolean isFarkle) throws InterruptedException {
             if(isFarkle){
                 showFarkle(rolledDiceNum);
@@ -843,6 +872,15 @@ public class HotDiceGui extends Application {
         @Override
         public void runAnimation1(DiceHand rolledDice) throws InterruptedException {
             doRunAnimation1(rolledDice);
+        }
+        @Override
+        public void showHotDice(){
+            synchronized (lock){
+                try {
+                    lock.wait(1000);
+                }catch (InterruptedException ignored){
+                }
+            }
         }
     }//End of class UltraConservativeGuiPlayer
 
@@ -993,7 +1031,7 @@ public class HotDiceGui extends Application {
             doWait();
         }
         @Override
-        public DiceHand chooseDiceToKeep(DiceHand rolledDice, boolean initialRoll) throws InterruptedException {
+        public DiceHand chooseDiceToKeep(DiceHand rolledDice) throws InterruptedException {
             if(rolledDice.getHandScore()==0){
                 return new DiceHand();
             }
@@ -1068,6 +1106,9 @@ public class HotDiceGui extends Application {
                     break;
                 case "Conservative Bot":
                     playerToAdd = new ConservativeGuiPlayer();
+                    break;
+                case "Moderate Bot":
+                    playerToAdd = new ModerateGuiPlayer();
                     break;
                 default:
                     throw new IllegalArgumentException(playerType + " was not able to be added." +
@@ -1160,7 +1201,7 @@ public class HotDiceGui extends Application {
             startRoot.getChildren().add(playerChoiceLabel);
         }
         private void makeButtons(Stage stage){
-            String[]choiceStrings = new String[]{"Human", "Ultra Conservative Bot", "Conservative Bot"};
+            String[]choiceStrings = new String[]{"Human", "Ultra Conservative Bot", "Conservative Bot", "Moderate Bot"};
 
             MenuButton[] playerChoiceButtons = new MenuButton[8];
             for (int i = 0; i<8; i++){
