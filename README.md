@@ -1,4 +1,5 @@
 # hot-dice-revisited
+This program is original work that I have written from scratch.
 
 Hot Dice, also Known as Farkle, is a folk dice game. Players roll hands of dice, competing to be the first person to reach 10,000 points. 
 Points are accumulated by rolling scoring hands, which are hands that contain 1s, 5s, sets of 3, sets of 4, sets of 5, sets of 6, straights, two sets of 3 of a kind, or 3 pair.
